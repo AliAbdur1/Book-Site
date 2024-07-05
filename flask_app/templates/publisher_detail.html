@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Publisher Details</title>
+</head>
+<body>
+    <h1>{{ publisher.name }}</h1>
+    <p>Address: {{ publisher.address }}</p>
+    <p>City: {{ publisher.city }}</p>
+    <p>State: {{ publisher.state }}</p>
+    <h3>Authors:</h3>
+    <ul>
+        {% for author in publisher.authors %}
+        <li>{{ author.first_name }} {{ author.last_name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('publishers_view') }}">Back to Publishers</a>
+</body>
+</html>

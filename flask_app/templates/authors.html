@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Authors</title>
+</head>
+<body>
+    <h1>All Authors</h1>
+    <a href="/authors/new">Add New Author</a>
+    <table border="1">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for author in all_authors %}
+        <tr>
+            <td>{{ author.first_name }}</td>
+            <td>{{ author.last_name }}</td>
+            <td>
+                <a href="/authors/{{ author.id }}/edit">Edit</a>
+                <a href="/authors/{{ author.id }}/delete">Delete</a>
+                <a href="/books_written_by_this_author/display/{{ author.id }}">books by this author</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+

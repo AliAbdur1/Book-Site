@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Author</title>
+</head>
+<body>
+    <h1>Add New Author</h1>
+    <form action="/authors/create" method="post">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" required><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" required><br>
+        <label for="publisher_id">Publisher ID (optional):</label>
+        <input type="text" name="publisher_id"><br>
+        <input type="submit" value="Add Author">
+    </form>
+</body>
+</html>
+

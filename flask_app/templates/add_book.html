@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+</head>
+<body>
+    <h1>Add Book</h1>
+    <form action="/books/add" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" required></textarea><br><br>
+        
+        <label for="page_count">Page Count:</label><br>
+        <input type="number" id="page_count" name="page_count" required><br><br>
+        
+        <label for="genre_id">Genre ID:</label><br>
+        <input type="number" id="genre_id" name="genre_id" required><br><br>
+        
+        <label for="author_id">Author ID:</label><br>
+        <input type="number" id="author_id" name="author_id" required><br><br>
+        
+        <label for="publisher_id">Publisher ID:</label><br>
+        <input type="number" id="publisher_id" name="publisher_id" required><br><br>
+        
+        <input type="submit" value="Add Book">
+    </form>
+</body>
+</html>

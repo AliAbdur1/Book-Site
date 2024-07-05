@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Book with Authors</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    <p>Description: {{ book.description }}</p>
+    <p>Page Count: {{ book.page_count }}</p>
+    <h3>Authors:</h3>
+    <ul>
+        {% for author in book.this_book_author %}
+        <li>{{ author.first_name }} {{ author.last_name }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="/books_with_multiple_authors">Back to Books with Multiple Authors</a>
+</body>
+</html>
+
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>This Author's Books</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>This Author's Books</h1>
+    {% if books_shown and books_shown.books_by_this_author %}
+        {% for book in books_shown.books_by_this_author %}
+            <h3>{{ book.title }}: {{ book.description }}</h3>
+            <a href="/book/{{ book.id }}">About this book</a>
+        {% endfor %}
+    {% else %}
+        <p>No books found for this author.</p>
+    {% endif %}
+    <br>
+    <a href="/authors">Back to Authors</a>
+</body>
+</html>
+
+
+
