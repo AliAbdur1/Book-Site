@@ -2,6 +2,13 @@
 <html>
 <head>
     <title>Add New Author</title>
+    {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
+        {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 </head>
 <body>
     <h1>Add New Author</h1>
@@ -14,6 +21,7 @@
         <input type="text" name="publisher_id"><br>
         <input type="submit" value="Add Author">
     </form>
+    <a href="/">Home</a>
 </body>
 </html>
 

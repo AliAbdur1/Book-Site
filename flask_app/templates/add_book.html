@@ -18,16 +18,32 @@
         <label for="page_count">Page Count:</label><br>
         <input type="number" id="page_count" name="page_count" required><br><br>
         
-        <label for="genre_id">Genre ID:</label><br>
-        <input type="number" id="genre_id" name="genre_id" required><br><br>
+        <label for="genre_id">Genre:</label><br>
+        <select name="genre_id" required>
+            <option value="" disabled selected>Select a Genre</option>
+            {% for genre in list_of_genres %}
+                <option value="{{ genre.id }}">{{ genre.name }}</option>
+            {% endfor %}
+        </select><br>
         
-        <label for="author_id">Author ID:</label><br>
-        <input type="number" id="author_id" name="author_id" required><br><br>
+        <label for="author_id">Author:</label>
+        <select name="author_id" required>
+            <option value="" disabled selected>Select an author</option>
+            {% for author in authors_for_book %}
+                <option value="{{ author.id }}">{{ author.first_name }} {{ author.last_name }}</option>
+            {% endfor %}
+        </select><br>
         
-        <label for="publisher_id">Publisher ID:</label><br>
-        <input type="number" id="publisher_id" name="publisher_id" required><br><br>
+        <label for="publisher_id">Publisher:</label><br>
+        <select name="publisher_id" required>
+            <option value="" disabled selected>Select a Publisher</option>
+            {% for publisher in publishers_of_books %}
+                <option value="{{ publisher.id }}">{{ publisher.name }}</option>
+            {% endfor %}
+        </select><br>
         
         <input type="submit" value="Add Book">
     </form>
+    <a href="/">Home</a>
 </body>
 </html>

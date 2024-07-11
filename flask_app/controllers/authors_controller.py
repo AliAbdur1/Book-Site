@@ -3,8 +3,10 @@ from flask import render_template, redirect, request
 from flask_app.models.authors_model import Author
 from flask_app.models.books_model import Book
 from flask_app.models.publishers_model import Publisher
+from flask_app.controllers import login_required
 
 @app.route('/authors')
+# @login_required
 def authors_view():
     authors = Author.get_all_authors()
     return render_template("authors.html", all_authors=authors)
@@ -21,6 +23,8 @@ def books_by_author_view(author_id):
 
 @app.route('/authors/create', methods=['POST'])
 def create_author():
+    if not Author.validate_author(request.form):
+        return redirect('/authors/new')
     data = {
         "first_name": request.form["first_name"],
         "last_name": request.form["last_name"],

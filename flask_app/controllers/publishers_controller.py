@@ -17,10 +17,13 @@ def publisher_detail(id):
 
 @app.route('/publishers/new')
 def new_publisher():
-    return render_template("new_publisher.html")
+    authors = Author.get_all_authors() # may need to move
+    return render_template("new_publisher.html", list_of_authors = authors)
 
 @app.route('/publishers/create', methods=['POST'])
 def create_publisher():
+    if not Publisher.validate_publisher(request.form):
+        return redirect('/publishers/new')
     data = {
         "name": request.form["name"],
         "address": request.form["address"],

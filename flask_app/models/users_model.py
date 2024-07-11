@@ -15,6 +15,16 @@ class User:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
     # Now we use class methods to query our database
+
+    @classmethod
+    def get_user_by_email(cls, email):
+        query = "SELECT * FROM users WHERE email = %(email)s;"
+        data = {"email": email}
+        results = connect_to_mysql(cls.DB).query_db(query, data)
+        if results:
+            return cls(results[0])
+        return None
+    
     @classmethod
     def get_all_users(cls):
         query = "SELECT * FROM users;"

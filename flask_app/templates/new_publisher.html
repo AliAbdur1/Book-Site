@@ -2,6 +2,13 @@
 <html>
 <head>
     <title>New Publisher</title>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 </head>
 <body>
     <h1>Add New Publisher</h1>
@@ -14,9 +21,16 @@
         <input type="text" name="city" required><br>
         <label for="state">State:</label>
         <input type="text" name="state" required><br>
-        <label for="author_id">Author ID:</label>
-        <input type="number" name="author_id" required><br> 
+        <label for="author_id">Author:</label>
+        <select name="author_id" required>
+            <option value="" disabled selected>Select an author</option>
+            {% for author in list_of_authors %}
+                <option value="{{ author.id }}">{{ author.first_name }} {{ author.last_name }}</option>
+            {% endfor %}
+        </select><br>
         <input type="submit" value="Add Publisher">
     </form>
+    <a href="/">Home</a>
 </body>
 </html>
+

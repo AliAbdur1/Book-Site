@@ -2,6 +2,10 @@ from flask import render_template, redirect, request, flash
 from flask_app import app
 from flask_app.models.authors_model import Author
 from flask_app.models.books_model import Book
+from flask_app.models.publishers_model import Publisher
+from flask_app.models.genres_model import Genre
+from flask_app.controllers import login_required
+
 
 @app.route('/books_with_multiple_authors')
 def get_books_that_have_multiple_authors():
@@ -27,6 +31,7 @@ def books_written_by_this_author(author_id):
     return render_template('books_written_by_this_author.html', books_shown=books_written)
 
 @app.route('/books')
+# @login_required
 def book_list():
     books = Book.get_all_books()
     return render_template('book_list.html', all_books=books)
@@ -34,6 +39,9 @@ def book_list():
 # Route to add a new book
 @app.route('/books/add', methods=['GET', 'POST'])
 def add_book():
+    authors = Author.get_all_authors()
+    publishers = Publisher.get_all_publishers()
+    genres = Genre.get_all_genres()
     if request.method == 'POST':
         data = {
             "title": request.form['title'],
@@ -49,7 +57,7 @@ def add_book():
             return redirect('/books')
         else:
             flash('Failed to add book. Please try again.', 'danger')
-    return render_template('add_book.html')
+    return render_template('add_book.html', authors_for_book = authors, publishers_of_books = publishers, list_of_genres = genres)
 
 # Route to delete a book
 @app.route('/book/<int:book_id>/delete', methods=['POST'])

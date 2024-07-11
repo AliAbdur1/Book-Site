@@ -1,6 +1,7 @@
 from flask_app.config.mysqlconnection import connect_to_mysql
 from flask_app.models import books_model
 from flask_app.models import publishers_model
+from flask import flash
 
 class Author:
     DB = 'mydb'
@@ -105,3 +106,14 @@ class Author:
     def delete_author(cls, data):
         query = "DELETE FROM authors WHERE id = %(id)s;"
         return connect_to_mysql(cls.DB).query_db(query, data)
+    
+    @staticmethod
+    def validate_author(author):
+        is_valid = True # we assume this is true
+        if len(author['first_name']) < 3:
+            flash("First name must be at least 3 characters.")
+            is_valid = False
+        if len(author['last_name']) < 3:
+            flash("Last name must be at least 3 characters.")
+            is_valid = False
+        return is_valid

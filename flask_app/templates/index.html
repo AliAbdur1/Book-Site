@@ -11,6 +11,13 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     </head>
     <body>
         <h1>Current Users</h1>
@@ -26,6 +33,12 @@
         <a href="/make_an_account">Create An Account</a>
         <br>
         <a href="/authors">Veiw Authors</a>
+        <br>
+        <a href="/publishers">Veiw Publishers</a>
+        <br>
+        <a href="/books">See Catalog of books</a>
+        <br>
+        <a href="/logout">Log Out</a>
         
         <script src="" async defer></script>
     </body>
