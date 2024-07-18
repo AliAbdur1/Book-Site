@@ -7,7 +7,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `mydb` ;
 
 -- -----------------------------------------------------
 -- Schema mydb
@@ -159,6 +158,31 @@ CREATE TABLE IF NOT EXISTS `mydb`.`reviews` (
     REFERENCES `mydb`.`users` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`author_publishers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`author_publishers` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `authors_id` INT NOT NULL,
+  `publishers_id` INT NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `fk_author_publishers_authors1_idx` (`authors_id` ASC) VISIBLE,
+  INDEX `fk_author_publishers_publishers1_idx` (`publishers_id` ASC) VISIBLE,
+  CONSTRAINT `fk_author_publishers_authors1`
+    FOREIGN KEY (`authors_id`)
+    REFERENCES `mydb`.`authors` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_author_publishers_publishers1`
+    FOREIGN KEY (`publishers_id`)
+    REFERENCES `mydb`.`publishers` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

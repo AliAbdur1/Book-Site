@@ -1,26 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Book with Authors</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .content-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h3 {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ book.title }}</h1>
-    <p>Description: {{ book.description }}</p>
-    <p>Page Count: {{ book.page_count }}</p>
-    <h3>Authors:</h3>
-    <ul>
-        {% for author in book.this_book_author %}
-        <li>{{ author.first_name }} {{ author.last_name }}</li>
-        {% endfor %}
-    </ul>
-    <br>
-    <a href="/books_with_multiple_authors">Back to Books with Multiple Authors</a>
-    <a href="/">Home</a>
+    <div class="container">
+        <div class="content-container">
+            <h1 class="text-center">{{ book.title }}</h1>
+            <p><strong>Description:</strong> {{ book.description }}</p>
+            <p><strong>Page Count:</strong> {{ book.page_count }}</p>
+            <h3>Authors:</h3>
+            <ul class="list-group">
+                {% for author in book.this_book_author %}
+                <li class="list-group-item">{{ author.first_name }} {{ author.last_name }}</li>
+                {% endfor %}
+            </ul>
+            <div class="text-center mt-4">
+                <a href="/books_with_multiple_authors" class="btn btn-link">Back to Books with Multiple Authors</a>
+                <a href="/" class="btn btn-link">Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-

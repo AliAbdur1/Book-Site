@@ -1,30 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>All Authors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .actions a {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>All Authors</h1>
-    <a href="/authors/new">Add New Author</a>
-    <table border="1">
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Actions</th>
-        </tr>
-        {% for author in all_authors %}
-        <tr>
-            <td>{{ author.first_name }}</td>
-            <td>{{ author.last_name }}</td>
-            <td>
-                <a href="/authors/{{ author.id }}/edit">Edit</a>
-                <a href="/authors/{{ author.id }}/delete">Delete</a>
-                <a href="/books_written_by_this_author/display/{{ author.id }}">books by this author</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="/">Home</a>
+    <div class="container">
+        <h1>All Authors</h1>
+        <a href="/authors/new" class="btn btn-primary mb-3">Add New Author</a>
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in all_authors %}
+                <tr>
+                    <td>{{ author.first_name }}</td>
+                    <td>{{ author.last_name }}</td>
+                    <td class="actions">
+                        <a href="/authors/{{ author.id }}/edit" class="btn btn-sm btn-info">Edit</a>
+                        <a href="/authors/{{ author.id }}/delete" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="/books_written_by_this_author/display/{{ author.id }}" class="btn btn-sm btn-secondary">Books by this author</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center mt-3">
+            <a href="/" class="btn btn-link">Home</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

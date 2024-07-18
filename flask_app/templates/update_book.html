@@ -4,22 +4,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Update Book</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0px;
+            padding: 1px;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+            radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
+        }
+        .form-container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-title {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Update Book</h1>
-    <form action="/book/{{ book.id }}/update" method="POST">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" value="{{ book.title }}" required><br><br>
-        
-        <label for="description">Description:</label><br>
-        <textarea id="description" name="description" rows="4" required>{{ book.description }}</textarea><br><br>
-        
-        <label for="page_count">Page Count:</label><br>
-        <input type="number" id="page_count" name="page_count" value="{{ book.page_count }}" required><br><br>
-        
-        <input type="submit" value="Update Book">
-    </form>
-    <a href="/">Home</a>
+    <div class="container">
+        <div class="form-container mt-5">
+            <h1 class="form-title text-center">Update Book</h1>
+            <form action="/book/{{ book.id }}/update" method="POST">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required>{{ book.description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="page_count">Page Count:</label>
+                    <input type="number" class="form-control" id="page_count" name="page_count" value="{{ book.page_count }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Update Book</button>
+            </form>
+            <a href="/" class="btn btn-link btn-block mt-3">Home</a>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

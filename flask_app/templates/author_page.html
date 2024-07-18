@@ -1,28 +1,57 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Authors</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h3 {
+            margin-bottom: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
         <h1>Authors</h1>
         {% for author in all_authors %}
-            <h3>{{author['first_name']}} {{author['last_name']}}</h3>
-            <a href="/books_written_by_this_author/display/{{ author['id'] }}">veiw books by this author</a>
-            
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3>{{ author['first_name'] }} {{ author['last_name'] }}</h3>
+                <a href="/books_written_by_this_author/display/{{ author['id'] }}" class="btn btn-primary">View books by this author</a>
+            </div>
+        </div>
         {% endfor %}
-        <br>
-        <a href="/">main page</a>
-        
-        <script src="" async defer></script>
-        <a href="/">Home</a>
-    </body>
+        <div class="text-center">
+            <a href="/" class="btn btn-link">Main Page</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>

@@ -1,45 +1,77 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <p>{{message}}</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Current Users</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/styles_and_stuff.css">
+    
+    <style>
+         body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .form-container {
+            background: #91C6EA;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-title {
+            margin-bottom: 20px;
+        }
+        .user-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container mt-5">
+            <h1 class="form-title text-center">Current Users</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% for user in users %}
+                <div class="user-card">
+                    <p><strong>First Name:</strong> {{ user['first_name'] }}</p>
+                    <p><strong>Last Name:</strong> {{ user['last_name'] }}</p>
+                    <p><strong>Email:</strong> {{ user['email'] }}</p>
+                    {% if session['user_id'] == user['id'] %}
+                        <a href="/user/delete/{{ user['id'] }}" class="btn btn-danger btn-sm">Delete this user</a>
+                        <a href="/user/show/{{ user['id'] }}" class="btn btn-warning btn-sm">Edit user info</a>
+                    {% endif %}
+                </div>
             {% endfor %}
-        {% endif %}
-    {% endwith %}
-    </head>
-    <body>
-        <h1>Current Users</h1>
-        {% for user in users %}
-            <p>{{user['first_name']}}</p>
-            <p>{{user['last_name']}}</p>
-            <p>{{user['email']}}</p>
-            <a href="/user/delete/{{ user['id'] }}">delete this user</a>
-            <a href="/user/show/{{ user['id'] }}">edit user info</a>
-        {% endfor %}
-        
-        <br>
-        <a href="/make_an_account">Create An Account</a>
-        <br>
-        <a href="/authors">Veiw Authors</a>
-        <br>
-        <a href="/publishers">Veiw Publishers</a>
-        <br>
-        <a href="/books">See Catalog of books</a>
-        <br>
-        <a href="/logout">Log Out</a>
-        
-        <script src="" async defer></script>
-    </body>
+            <a href="/make_an_account" class="btn btn-primary btn-block mt-3">Create An Account</a>
+            <a href="/authors" class="btn btn-secondary btn-block mt-3">View Authors</a>
+            <a href="/publishers" class="btn btn-secondary btn-block mt-3">View Publishers</a>
+            <a href="/books" class="btn btn-secondary btn-block mt-3">See Catalog of Books</a>
+            <a href="/logout" class="btn btn-danger btn-block mt-3">Log Out</a>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
 </html>

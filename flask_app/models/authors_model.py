@@ -15,6 +15,7 @@ class Author:
         self.publisher_id = data.get('publisher_id')
         self.publisher = None
         self.books_by_this_author = []
+        
     
     @classmethod
     def get_all_authors(cls):

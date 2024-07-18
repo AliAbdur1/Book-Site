@@ -28,8 +28,11 @@ class Publisher:
     @classmethod
     def get_publisher_with_authors(cls, data):
         query = """
-            SELECT * FROM publishers
-            LEFT JOIN authors ON authors.publisher_id = publishers.id
+            SELECT publishers.*, authors.id AS author_id, authors.first_name, authors.last_name,
+                   authors.created_at AS author_created_at, authors.updated_at AS author_updated_at
+            FROM publishers
+            LEFT JOIN author_publishers ON publishers.id = author_publishers.publishers_id
+            LEFT JOIN authors ON author_publishers.authors_id = authors.id
             WHERE publishers.id = %(id)s;
         """
         results = connect_to_mysql(cls.DB).query_db(query, data)
@@ -37,15 +40,43 @@ class Publisher:
             return None
         publisher = cls(results[0])
         for row in results:
-            author_data = {
-                "id": row["authors.id"],
-                "first_name": row["authors.first_name"],
-                "last_name": row["authors.last_name"],
-                "created_at": row["authors.created_at"],
-                "updated_at": row["authors.updated_at"]
-            }
-            publisher.authors.append(authors_model.Author(author_data))
+            if row['author_id']:
+                author_data = {
+                    "id": row["author_id"],
+                    "first_name": row["first_name"],
+                    "last_name": row["last_name"],
+                    "created_at": row["author_created_at"],
+                    "updated_at": row["author_updated_at"]
+                }
+                print(author_data)
+                publisher.authors.append(authors_model.Author(author_data))
         return publisher
+    
+    # @classmethod
+    # def get_publisher_with_authors(cls, data):
+    #     query = """
+    #         SELECT publishers.*, authors.id AS author_id, authors.first_name, authors.last_name, 
+    #         authors.created_at AS author_created_at, authors.updated_at AS author_updated_at
+    #         FROM publishers
+    #         LEFT JOIN authors ON authors.publisher_id = publishers.id
+    #         WHERE publishers.id = %(id)s;
+    #     """
+    #     results = connect_to_mysql(cls.DB).query_db(query, data)
+    #     print(results)
+    #     if not results:
+    #         return None
+    #     publisher = cls(results[0])
+    #     for row in results:
+    #         if row['author_id']:
+    #             author_data = {
+    #                 "id": row["authors.id"],
+    #                 "first_name": row["authors.first_name"],
+    #                 "last_name": row["authors.last_name"],
+    #                 "created_at": row["authors.created_at"],
+    #                 "updated_at": row["authors.updated_at"]
+    #             }
+    #             publisher.authors.append(authors_model.Author(author_data))
+    #     return publisher
 
     @classmethod
     def create_publisher(cls, data):

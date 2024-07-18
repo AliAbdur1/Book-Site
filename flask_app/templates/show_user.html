@@ -1,35 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Update User</title>
     <meta name="description" content="Update user information">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .form-container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .form-title {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Update User Information</h1>
+    <div class="container">
+        <div class="form-container">
+            <h1 class="form-title">Update User Information</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="alert alert-dismissible fade show">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+                {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            <p class="text-center">The user is... {{ user['first_name'] }}</p>
+            <form action="/user/update/{{ user['id'] }}" method="POST">
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user['first_name'] }}">
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user['last_name'] }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user['email'] }}">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" value="">
+                </div>
+                {% if session['role'] == 'admin' %}
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select class="form-control" name="role" id="role">
+                            <option value="user" {% if user['role'] == 'user' %} selected {% endif %}>User</option>
+                            <option value="admin" {% if user['role'] == 'admin' %} selected {% endif %}>Admin</option>
+                        </select>
+                    </div>
+                {% else %}
+                    <input type="hidden" name="role" value="{{ user['role'] }}">
+                {% endif %}
+                <button type="submit" class="btn btn-primary btn-block">Update User</button>
+            </form>
+            <a href="/" class="btn btn-link btn-block mt-3">Home</a>
+        </div>
+    </div>
     
-    <p>The user is... {{ user['first_name'] }}</p>
-    <form action="/user/update/{{ user['id'] }}" method="POST">
-        
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name" value="{{ user['first_name'] }}">
-        
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" value="{{ user['last_name'] }}">
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ user['email'] }}">
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" value="{{ user['password'] }}">
-        
-        <input type="submit" value="Update User">
-    </form>
-    
-    <script src="" async defer></script>
-    <a href="/">Home</a>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

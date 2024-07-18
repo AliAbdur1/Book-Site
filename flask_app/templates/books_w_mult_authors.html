@@ -1,40 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Books with Multiple Authors</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .table-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <h1>Books with Multiple Authors</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Page Count</th>
-                <th>Authors</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for book in all_books %}
-            <tr>
-                <td>{{ book.title }}</td>
-                <td>{{ book.description }}</td>
-                <td>{{ book.page_count }}</td>
-                <td>
-                    {% for author in book.this_Books_many_Authors %}
-                    {{ author.first_name }} {{ author.last_name }}{% if not loop.last %}, {% endif %}
+    <div class="container">
+        <h1 class="text-center">Books with Multiple Authors</h1>
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Page Count</th>
+                        <th>Authors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in all_books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.description }}</td>
+                        <td>{{ book.page_count }}</td>
+                        <td>
+                            {% for author in book.this_Books_many_Authors %}
+                            {{ author.first_name }} {{ author.last_name }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
                     {% endfor %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="/books_with_multiple_authors">Back to Books with Multiple Authors</a>
-    <a href="/">Home</a>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/books_with_multiple_authors" class="btn btn-link">Back to Books with Multiple Authors</a>
+            <a href="/" class="btn btn-link">Home</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

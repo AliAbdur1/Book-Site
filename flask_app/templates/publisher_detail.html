@@ -1,20 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publisher Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .form-title {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .author-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .author-list li::before {
+            content: '• ';
+            color: #007BFF;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ publisher.name }}</h1>
-    <p>Address: {{ publisher.address }}</p>
-    <p>City: {{ publisher.city }}</p>
-    <p>State: {{ publisher.state }}</p>
-    <h3>Authors:</h3>
-    <ul>
-        {% for author in publisher.authors %}
-        <li>{{ author.first_name }} {{ author.last_name }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('publishers_view') }}">Back to Publishers</a>
-    <a href="/">Home</a>
+    <div class="container">
+        <h1 class="form-title">{{ publisher.name }}</h1>
+        <p><strong>Address:</strong> {{ publisher.address }}</p>
+        <p><strong>City:</strong> {{ publisher.city }}</p>
+        <p><strong>State:</strong> {{ publisher.state }}</p>
+        <h3>Authors that work with this publisher:</h3>
+        <ul class="author-list">
+            {% for author in publisher.authors %}
+            <li>{{ author.first_name }} {{ author.last_name }}</li>
+            {% endfor %}
+        </ul>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('publishers_view') }}" class="btn btn-primary">Back to Publishers</a>
+            <a href="/" class="btn btn-link">Home</a>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

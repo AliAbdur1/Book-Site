@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>User Dashboard</title>
+    </head>
+    <body>
+        <h1>Current Users</h1>
+        {% for user in users %}
+            <p>{{ user.first_name }}</p>
+            <p>{{ user.last_name }}</p>
+            <p>{{ user.email }}</p>
+            {% if session['user_id'] == user.id or session['role'] == 'admin' %}
+                <a href="/user/delete/{{ user.id }}">Delete this user</a>
+                <a href="/user/show/{{ user.id }}">Edit user info</a>
+            {% endif %}
+        {% endfor %}
+        
+        <br>
+        <a href="/make_an_account">Create An Account</a>
+        <br>
+        <a href="/authors">View Authors</a>
+        <br>
+        <a href="/publishers">View Publishers</a>
+        <br>
+        <a href="/books">See Catalog of Books</a>
+        <br>
+        <a href="/logout">Log Out</a>
+    </body>
+</html>

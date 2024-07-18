@@ -1,27 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Author</title>
-    {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
-        {% if messages %}                            <!-- check if there are any messages -->
-            {% for message in messages %}            <!-- loop through the messages -->
-                <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .form-title {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Add New Author</h1>
-    <form action="/authors/create" method="post">
-        <label for="first_name">First Name:</label>
-        <input type="text" name="first_name" required><br>
-        <label for="last_name">Last Name:</label>
-        <input type="text" name="last_name" required><br>
-        <label for="publisher_id">Publisher ID (optional):</label>
-        <input type="text" name="publisher_id"><br>
-        <input type="submit" value="Add Author">
-    </form>
-    <a href="/">Home</a>
+    <div class="container">
+        <h1 class="form-title">Add New Author</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-info">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form action="/authors/create" method="post">
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="publisher_id">Publisher ID (optional):</label>
+                <input type="text" class="form-control" name="publisher_id">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Add Author</button>
+        </form>
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-link">Home</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

@@ -1,7 +1,8 @@
 from flask_app.config.mysqlconnection import connect_to_mysql
+from flask import flash
 # import the function that will return an instance of a connection
 
-# model the class after the friend table from our database
+# model the class after the user table from our database
 # DB = 'mydb'
 
 class User:
@@ -12,6 +13,7 @@ class User:
         self.last_name = data['last_name']
         self.email = data['email']
         self.password = data['password']
+        self.role = data['role']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
     # Now we use class methods to query our database
@@ -39,7 +41,7 @@ class User:
     
     @classmethod
     def create_user(cls, data):
-        query = "INSERT INTO users (first_name, last_name, email, password, created_at, updated_at) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(), NOW());"
+        query = "INSERT INTO users (first_name, last_name, email, password, role, created_at, updated_at) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, %(role)s, NOW(), NOW());"
         # data is a dictionary that will be passed into the save method from server.py
         return connect_to_mysql(cls.DB).query_db(query, data)
     
@@ -54,7 +56,7 @@ class User:
     def update(cls,data):
         query = """
                 UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,
-                email=%(email)s, password=%(password)s 
+                email=%(email)s, password=%(password)s, role=%(role)s
                 WHERE id = %(id)s;
                 """
         results = connect_to_mysql(cls.DB).query_db(query,data)
@@ -65,3 +67,20 @@ class User:
         query  = "DELETE FROM users WHERE id = %(id)s;"
         data = {"id": user_id}
         return connect_to_mysql(cls.DB).query_db(query, data)
+    
+    @staticmethod
+    def validate_user(user):
+        is_valid = True
+        if len(user['first_name']) < 2:
+            flash("First name must be at least 2 characters.", "register")
+            is_valid = False
+        if len(user['last_name']) < 2:
+            flash("Last name must be at least 2 characters.", "register")
+            is_valid = False
+        if len(user['email']) < 5:
+            flash("Email must be valid.", "register")
+            is_valid = False
+        if 'password' in user and len(user['password']) < 8:
+            flash("Password must be at least 8 characters.", "register")
+            is_valid = False
+        return is_valid

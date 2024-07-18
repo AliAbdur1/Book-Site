@@ -16,6 +16,7 @@ class Book:
         self.publisher_id = data['publisher_id']
         self.this_book_author = []
         self.this_Books_many_Authors = []
+        self.this_author_here = []
 
     @classmethod
     def get_all_books(cls):
@@ -95,12 +96,14 @@ class Book:
         if current_book and len(current_book.this_Books_many_Authors) > 1:
             books.append(current_book)
         return books
+    
+    
 
 # gtp edit to get books with multiple authors vv
     @classmethod
     def get_books_that_have_multiple_authors(cls):
         query = """
-                SELECT books.*, authors.id AS author_id, authors.first_name, authors.last_name, 
+                SELECT books.*, authors.id AS this_author_id, authors.first_name, authors.last_name, 
                 authors.created_at AS author_created_at, authors.updated_at AS author_updated_at
                 FROM books
                 LEFT JOIN book_authors ON book_authors.book_id = books.id
@@ -132,9 +135,9 @@ class Book:
                 current_book = cls(book_data)
                 current_book_id = row['id']
         
-            if row['author_id'] is not None:
+            if row['this_author_id'] is not None:
                 author_data = {
-                    "id": row['author_id'],
+                    "id": row['this_author_id'],
                     "first_name": row['first_name'],
                     "last_name": row['last_name'],
                     "created_at": row['author_created_at'],
@@ -165,7 +168,7 @@ class Book:
     @classmethod
     def update(cls,data):
         query = """
-                UPDATE books SET title=%(title)s, description=%(description)s, page_count=%(page_count)s,
+                UPDATE books SET title=%(title)s, description=%(description)s, page_count=%(page_count)s
                 WHERE id = %(id)s;
                 """
         results = connect_to_mysql(cls.DB).query_db(query,data)

@@ -1,27 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>This Author's Books</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at top, #e66465, transparent),
+                        radial-gradient(ellipse at bottom, #4d9f0c, transparent);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            background: #A9DEE3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .book-item {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>This Author's Books</h1>
-    {% if books_shown and books_shown.books_by_this_author %}
-        {% for book in books_shown.books_by_this_author %}
-            <h3>{{ book.title }}: {{ book.description }}</h3>
-            <a href="/book/{{ book.id }}">About this book</a>
-        {% endfor %}
-    {% else %}
-        <p>No books found for this author.</p>
-    {% endif %}
-    <br>
-    <a href="/authors">Back to Authors</a>
-    <a href="/">Home</a>
+    <div class="container">
+        <h1 class="text-center">This Author's Books</h1>
+        {% if books_shown and books_shown.books_by_this_author %}
+            {% for book in books_shown.books_by_this_author %}
+                <div class="book-item">
+                    <h3>{{ book.title }}</h3>
+                    <p>{{ book.description }}</p>
+                    <a href="/book/{{ book.id }}" class="btn btn-primary btn-custom">About this book</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">No books found for this author.</p>
+        {% endif %}
+        <div class="text-center">
+            <a href="/authors" class="btn btn-link btn-custom">Back to Authors</a>
+            <a href="/" class="btn btn-link btn-custom">Home</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
-

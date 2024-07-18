@@ -1,13 +1,25 @@
-from flask import render_template, redirect, request, flash
+from flask import render_template, redirect, request, flash, session, url_for
 from flask_app import app
 from flask_app.models.authors_model import Author
 from flask_app.models.books_model import Book
 from flask_app.models.publishers_model import Publisher
 from flask_app.models.genres_model import Genre
-from flask_app.controllers import login_required
+from functools import wraps # wraps stuff
 
+
+# decorator v
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please log in to access this page', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+# decorator ^
 
 @app.route('/books_with_multiple_authors')
+@login_required # login
 def get_books_that_have_multiple_authors():
     books = Book.get_books_with_multiple_authors()
     if not books:
@@ -15,6 +27,7 @@ def get_books_that_have_multiple_authors():
     return render_template("books_w_mult_authors.html", all_books=books)
 
 @app.route('/book/<int:book_id>')
+@login_required # login
 def book_with_authors(book_id):
     data = {"id": book_id}
     book = Book.get_book_w_author(data)
@@ -23,6 +36,7 @@ def book_with_authors(book_id):
     return render_template("book_w_authors.html", book=book)
 
 @app.route('/authors/<int:author_id>/books')
+@login_required # login
 def books_written_by_this_author(author_id):
     data = {"id": author_id}
     books_written = Author.get_author_w_books(data)
@@ -31,13 +45,14 @@ def books_written_by_this_author(author_id):
     return render_template('books_written_by_this_author.html', books_shown=books_written)
 
 @app.route('/books')
-# @login_required
+@login_required # login
 def book_list():
     books = Book.get_all_books()
     return render_template('book_list.html', all_books=books)
 
 # Route to add a new book
 @app.route('/books/add', methods=['GET', 'POST'])
+@login_required # login
 def add_book():
     authors = Author.get_all_authors()
     publishers = Publisher.get_all_publishers()
@@ -61,6 +76,7 @@ def add_book():
 
 # Route to delete a book
 @app.route('/book/<int:book_id>/delete', methods=['POST'])
+@login_required # login
 def delete_book(book_id):
     result = Book.delete_book(book_id)
     if result:
@@ -71,6 +87,7 @@ def delete_book(book_id):
 
 # Route to update a book
 @app.route('/book/<int:book_id>/update', methods=['GET', 'POST'])
+@login_required # login
 def update_book(book_id):
     if request.method == 'POST':
         data = {
