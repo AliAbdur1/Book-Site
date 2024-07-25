@@ -1,9 +1,23 @@
 from flask_app.config.mysqlconnection import connect_to_mysql
-from flask import flash
 # import the function that will return an instance of a connection
+from flask import flash
+import re
+
 
 # model the class after the user table from our database
-# DB = 'mydb'
+
+# password_pattern = re.compile(
+#     r"""
+#     ^                # start of string
+#     (?=.*[A-Z])      # at least one uppercase letter
+#     (?=.*[a-z])      # at least one lowercase letter
+#     (?=.*\d)         # at least one digit
+#     (?=.*[@$!%*?&])  # at least one special character
+#     [A-Za-z\d@$!%*?&] # allowed characters
+#     {8,}             # at least 8 characters long
+#     $                # end of string
+#     """, re.VERBOSE)
+# password_pattern = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+[@$!%*?&]+$')
 
 class User:
     DB = 'mydb'
@@ -70,6 +84,18 @@ class User:
     
     @staticmethod
     def validate_user(user):
+        # password_pattern = re.compile(r'^.*(?=.{8,10})(?=.*[a-zA-Z])(?=.*?[A-Z])(?=.*\d)[a-zA-Z0-9!@$%^&*()_+={}?:~\[\]]+$')
+        password_pattern = re.compile(
+            r"""
+            ^                 # start of string
+            (?=.*[A-Z])       # at least one uppercase letter
+            (?=.*[a-z])       # at least one lowercase letter
+            (?=.*\d)          # at least one digit
+            (?=.*[@$!%*?&])   # at least one special character
+            [A-Za-z\d@$!%*?&] # allowed characters
+            {8,}              # at least 8 characters long
+            $                 # end of string
+            """, re.VERBOSE)
         is_valid = True
         if len(user['first_name']) < 2:
             flash("First name must be at least 2 characters.", "register")
@@ -82,5 +108,8 @@ class User:
             is_valid = False
         if 'password' in user and len(user['password']) < 8:
             flash("Password must be at least 8 characters.", "register")
+            is_valid = False
+        if 'password' in user and not password_pattern.match(user['password']):
+            flash("password must be at least 8 characters, contain an upper and lowercase char and one symbol and number")
             is_valid = False
         return is_valid

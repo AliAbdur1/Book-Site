@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`publishers` (
   CONSTRAINT `fk_publishers_authors1`
     FOREIGN KEY (`author_id`)
     REFERENCES `mydb`.`authors` (`id`)
-    ON DELETE RESTRICT)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb3;
@@ -88,14 +89,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`books` (
   CONSTRAINT `fk_books_authors2`
     FOREIGN KEY (`author_id`)
     REFERENCES `mydb`.`authors` (`id`)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_books_genres`
     FOREIGN KEY (`genre_id`)
     REFERENCES `mydb`.`genres` (`id`)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_books_publishers1`
     FOREIGN KEY (`publisher_id`)
-    REFERENCES `mydb`.`publishers` (`id`))
+    REFERENCES `mydb`.`publishers` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb3;
@@ -111,10 +116,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`book_authors` (
   INDEX `author_id` (`author_id` ASC) VISIBLE,
   CONSTRAINT `book_authors_ibfk_1`
     FOREIGN KEY (`book_id`)
-    REFERENCES `mydb`.`books` (`id`),
+    REFERENCES `mydb`.`books` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
   CONSTRAINT `book_authors_ibfk_2`
     FOREIGN KEY (`author_id`)
-    REFERENCES `mydb`.`authors` (`id`))
+    REFERENCES `mydb`.`authors` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -152,10 +161,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`reviews` (
   INDEX `fk_likes_books1_idx` (`book_id` ASC) VISIBLE,
   CONSTRAINT `fk_likes_books1`
     FOREIGN KEY (`book_id`)
-    REFERENCES `mydb`.`books` (`id`),
+    REFERENCES `mydb`.`books` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_likes_users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `mydb`.`users` (`id`))
+    REFERENCES `mydb`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -175,12 +188,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`author_publishers` (
   CONSTRAINT `fk_author_publishers_authors1`
     FOREIGN KEY (`authors_id`)
     REFERENCES `mydb`.`authors` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_author_publishers_publishers1`
     FOREIGN KEY (`publishers_id`)
     REFERENCES `mydb`.`publishers` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

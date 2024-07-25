@@ -175,7 +175,7 @@ class Book:
         return results
     
     @classmethod
-    def delete_user(cls, book_id):
+    def delete_book(cls, book_id):
         query  = "DELETE FROM books WHERE id = %(id)s;"
         data = {"id": book_id}
         return connect_to_mysql(cls.DB).query_db(query, data)

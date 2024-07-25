@@ -139,11 +139,14 @@ def update_user(user_id):
 @app.route('/user/delete/<int:user_id>')
 @login_required # login
 def delete(user_id):
-    if not user_matches_session(user_id):
+    if not user_matches_session(user_id) and not session.get('role') == 'admin':
         flash('You are not authorized to view this page', 'danger')
         return redirect('/')
+    if session.get('role') == 'admin' and not user_matches_session(user_id): 
+        User.delete_user(user_id)
+        return redirect('/admin') # allows admin to delete a user and remain on admin page
     User.delete_user(user_id)
-    return redirect('/')
+    return redirect('/logout') #consider a user deleting their own account vs an admin deleting a useraccount
 
 @app.route('/logout')
 def logout():

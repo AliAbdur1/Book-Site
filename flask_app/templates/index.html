@@ -58,6 +58,9 @@
                     {% if session['user_id'] == user['id'] %}
                         <a href="/user/delete/{{ user['id'] }}" class="btn btn-danger btn-sm">Delete this user</a>
                         <a href="/user/show/{{ user['id'] }}" class="btn btn-warning btn-sm">Edit user info</a>
+                        {% if session['role'] == 'admin' %}
+                            <a href="/admin">Go to dashboard</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endfor %}

@@ -3,10 +3,12 @@
     <head>
         <meta charset="utf-8">
         <title>User Dashboard</title>
+        <link rel="stylesheet" href="static/css/admin_style.css">
     </head>
     <body>
         <h1>Current Users</h1>
-        {% for user in users %}
+        <div class="form_container">
+            {% for user in users %}
             <p>{{ user.first_name }}</p>
             <p>{{ user.last_name }}</p>
             <p>{{ user.email }}</p>
@@ -15,16 +17,28 @@
                 <a href="/user/show/{{ user.id }}">Edit user info</a>
             {% endif %}
         {% endfor %}
+
+        </div>
         
-        <br>
-        <a href="/make_an_account">Create An Account</a>
-        <br>
-        <a href="/authors">View Authors</a>
-        <br>
-        <a href="/publishers">View Publishers</a>
-        <br>
-        <a href="/books">See Catalog of Books</a>
-        <br>
-        <a href="/logout">Log Out</a>
+        <div id="link_section">
+            <br>
+            <a href="/make_an_account" class="link_btn">Create An Account</a>
+            <br>
+            <a href="/authors" class="link_btn">View Authors</a>
+            <br>
+            <a href="/authors/new" class="link_btn">Enter a New Author?</a>
+            <br>
+            <a href="/publishers" class="link_btn">View Publishers</a>
+            <br>
+            <a href="/publishers/new" class="link_btn">Enter a New Publisher?</a>
+            <br>
+            <a href="/books" class="link_btn">See Catalog of Books</a>
+            <br>
+            <a href="/books/add" class="link_btn">Enter a New Book?</a>
+            <br>
+            <a href="/logout" class="link_btn">Log Out</a>
+
+        </div>
+        
     </body>
 </html>

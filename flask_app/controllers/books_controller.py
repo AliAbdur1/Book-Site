@@ -75,15 +75,17 @@ def add_book():
     return render_template('add_book.html', authors_for_book = authors, publishers_of_books = publishers, list_of_genres = genres)
 
 # Route to delete a book
-@app.route('/book/<int:book_id>/delete', methods=['POST'])
+@app.route('/book/<int:book_id>/delete', methods=['GET', 'POST'])
 @login_required # login
-def delete_book(book_id):
+def delete_this_book(book_id):
+    if request.method == 'POST':
+        # result = Book.delete_book(book_id)
+        if result:
+            flash('Book deleted successfully!', 'success')
+        else:
+            flash('Failed to delete book. Please try again.', 'danger')
     result = Book.delete_book(book_id)
-    if result:
-        flash('Book deleted successfully!', 'success')
-    else:
-        flash('Failed to delete book. Please try again.', 'danger')
-    return redirect('/books_with_multiple_authors')
+    return redirect('/books')
 
 # Route to update a book
 @app.route('/book/<int:book_id>/update', methods=['GET', 'POST'])
