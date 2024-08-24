@@ -36,9 +36,13 @@
         <h1 class="form-title">Publishers</h1>
         <ul class="list-group">
             {% for publisher in all_publishers %}
-            <li class="list-group-item">
-                <a href="{{ url_for('publisher_detail', id=publisher.id) }}">{{ publisher.name }}</a>
-            </li>
+                <li class="list-group-item">
+                    <a href="{{ url_for('publisher_detail', id=publisher.id) }}">{{ publisher.name }}</a>
+                    <a href="/publisher/{{ publisher.id }}/update" class="btn btn-sm btn-info">Edit</a>
+                    <form action="{{ url_for('delete_this_publisher', publisher_id=publisher.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </li>
             {% endfor %}
         </ul>
         <div class="text-center mt-4">

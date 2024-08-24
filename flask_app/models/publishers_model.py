@@ -104,8 +104,9 @@ class Publisher:
         return connect_to_mysql(cls.DB).query_db(query, data)
 
     @classmethod
-    def delete_publisher(cls, data):
+    def delete_publisher(cls, publisher_id):
         query = "DELETE FROM publishers WHERE id = %(id)s;"
+        data = {"id": publisher_id}
         return connect_to_mysql(cls.DB).query_db(query, data)
     
     @staticmethod

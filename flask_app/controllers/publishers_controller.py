@@ -1,4 +1,5 @@
 from flask_app import app
+from flask_app.config.mysqlconnection import connect_to_mysql
 from flask import render_template, redirect, request, session, flash, url_for
 from flask_app.models.publishers_model import Publisher
 from flask_app.models.authors_model import Author
@@ -48,4 +49,53 @@ def create_publisher():
         "author_id": request.form["author_id"]
     }
     Publisher.create_publisher(data)
+    return redirect('/publishers')
+
+@app.route('/publisher/<int:publisher_id>/update', methods=['GET', 'POST'])
+@login_required # login
+def update_publisher(publisher_id):
+    if request.method == 'POST':
+        data = {
+            "id": publisher_id,
+            "name": request.form['name'],
+            "address": request.form['address'],
+            "city": request.form['city'],
+            "state": request.form['state']
+        }
+        result = Publisher.update_publisher(data)
+        if result:
+            flash('Publisher updated successfully!', 'success')
+            return redirect(f'/book/{publisher_id}')
+        else:
+            flash('Failed to update publisher. Please try again.', 'danger')
+    # Fetch the book data to pre-populate the form
+    publisher = Publisher.get_publisher_by_id(publisher_id)
+    return render_template('update_publisher.html', publisher=publisher)
+
+# @app.route('/publisher/<int:publisher_id>/delete', methods=['GET', 'POST'])
+# @login_required # login
+# def delete_this_publisher(publisher_id):
+#     if request.method == 'POST':
+#         # result = Book.delete_book(book_id)
+#         if result:
+#             flash('publisher deleted successfully!', 'success')
+#         else:
+#             flash('Failed to delete publisher. Please try again.', 'danger')
+#     result = Publisher.delete_publisher(publisher_id)
+#     return redirect('/publishers')
+
+@app.route('/publisher/<int:publisher_id>/delete', methods=['POST'])
+@login_required  # login
+def delete_this_publisher(publisher_id):
+    try:
+        # First, delete all entries in author_publishers that reference this publisher
+        query = "DELETE FROM author_publishers WHERE publishers_id = %(id)s;"
+        data = {"id": publisher_id}
+        connect_to_mysql(Publisher.DB).query_db(query, data)
+
+        # Now, delete the publisher itself
+        Publisher.delete_publisher(publisher_id)
+        flash('Publisher deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Failed to delete publisher. Error: {str(e)}', 'danger')
     return redirect('/publishers')
