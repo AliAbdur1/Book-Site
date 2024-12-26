@@ -37,6 +37,17 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        .user-info-container {
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -52,16 +63,24 @@
             {% endwith %}
             {% for user in users %}
                 <div class="user-card">
-                    <p><strong>First Name:</strong> {{ user['first_name'] }}</p>
-                    <p><strong>Last Name:</strong> {{ user['last_name'] }}</p>
-                    <p><strong>Email:</strong> {{ user['email'] }}</p>
-                    {% if session['user_id'] == user['id'] %}
-                        <a href="/user/delete/{{ user['id'] }}" class="btn btn-danger btn-sm">Delete this user</a>
-                        <a href="/user/show/{{ user['id'] }}" class="btn btn-warning btn-sm">Edit user info</a>
-                        {% if session['role'] == 'admin' %}
-                            <a href="/admin">Go to dashboard</a>
-                        {% endif %}
-                    {% endif %}
+                    <div class="user-info-container">
+                        <img src="{{ url_for('static', filename='profile_photos/' + user['profile_photo']) }}" 
+                             alt="Profile Photo" 
+                             class="profile-pic">
+                        <div>
+                            <h3><a href="/user/profile/{{ user['id'] }}">{{ user['first_name'] }} {{ user['last_name'] }}</a></h3>
+                            <p><strong>Email:</strong> {{ user['email'] }}</p>
+                            {% if session['user_id'] == user['id'] %}
+                                <div class="mt-2">
+                                    <a href="/user/delete/{{ user['id'] }}" class="btn btn-danger btn-sm">Delete Account</a>
+                                    <a href="/user/show/{{ user['id'] }}" class="btn btn-warning btn-sm">Edit Profile</a>
+                                    {% if session['role'] == 'admin' %}
+                                        <a href="/admin" class="btn btn-info btn-sm">Admin Dashboard</a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
             <a href="/make_an_account" class="btn btn-primary btn-block mt-3">Create An Account</a>

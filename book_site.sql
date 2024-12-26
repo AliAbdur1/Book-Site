@@ -74,7 +74,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`books` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(45) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
   `description` LONGTEXT NOT NULL,
   `page_count` BIGINT NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -194,6 +194,27 @@ CREATE TABLE IF NOT EXISTS `mydb`.`author_publishers` (
     FOREIGN KEY (`publishers_id`)
     REFERENCES `mydb`.`publishers` (`id`)
     ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`reviews_on_books`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`reviews_on_books` (
+  `books_id` INT NOT NULL,
+  `reviews_id` INT NOT NULL,
+  INDEX `fk_reviews_on_books_books1_idx` (`books_id` ASC) VISIBLE,
+  INDEX `fk_reviews_on_books_reviews1_idx` (`reviews_id` ASC) VISIBLE,
+  CONSTRAINT `fk_reviews_on_books_books1`
+    FOREIGN KEY (`books_id`)
+    REFERENCES `mydb`.`books` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_on_books_reviews1`
+    FOREIGN KEY (`reviews_id`)
+    REFERENCES `mydb`.`reviews` (`id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <title>Update Book</title>
     <style>
         html, body {
@@ -15,7 +16,6 @@
             radial-gradient(ellipse at bottom, #4d9f0c, transparent);
             background-repeat: no-repeat;
             background-attachment: fixed;
-            
         }
         .form-container {
             background: #A9DEE3;
@@ -27,6 +27,9 @@
         }
         .form-title {
             margin-bottom: 20px;
+        }
+        .select2-container {
+            width: 100% !important;
         }
     </style>
 </head>
@@ -47,6 +50,42 @@
                     <label for="page_count">Page Count:</label>
                     <input type="number" class="form-control" id="page_count" name="page_count" value="{{ book.page_count }}" required>
                 </div>
+                
+                <div class="form-group">
+                    <label for="genre_id">Genre:</label>
+                    <select name="genre_id" class="form-control" required>
+                        {% for genre in genres %}
+                            <option value="{{ genre.id }}" {% if genre.id == book.genre_id %}selected{% endif %}>
+                                {{ genre.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="authors">Authors:</label>
+                    <select name="author_ids[]" class="form-control" id="authorSelect" multiple required>
+                        {% for author in authors %}
+                            <option value="{{ author.id }}" 
+                                {% if author in book.this_Books_many_Authors %}selected{% endif %}>
+                                {{ author.first_name }} {{ author.last_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple authors</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="publisher_id">Publisher:</label>
+                    <select name="publisher_id" class="form-control" required>
+                        {% for publisher in publishers %}
+                            <option value="{{ publisher.id }}" {% if publisher.id == book.publisher_id %}selected{% endif %}>
+                                {{ publisher.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
                 <button type="submit" class="btn btn-primary btn-block">Update Book</button>
             </form>
             <a href="/" class="btn btn-link btn-block mt-3">Home</a>
@@ -56,5 +95,16 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 for better multiple selection UI
+            $('#authorSelect').select2({
+                placeholder: 'Select authors',
+                width: '100%'
+            });
+        });
+    </script>
 </body>
 </html>

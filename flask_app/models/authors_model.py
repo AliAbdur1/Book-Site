@@ -29,34 +29,42 @@ class Author:
     @classmethod
     def get_author_w_books(cls, data):
         query = """
-                SELECT authors.*, books.id AS book_id, books.title, books.description, books.page_count, 
-                books.created_at AS book_created_at, books.updated_at AS book_updated_at, 
-                books.genre_id, books.author_id, books.publisher_id
-                FROM authors
-                LEFT JOIN books ON books.author_id = authors.id
-                WHERE authors.id = %(id)s
-                """
-        result = connect_to_mysql(cls.DB).query_db(query, data)
-    
-        if not result:
+            SELECT authors.*, 
+                   books.id AS book_id, 
+                   books.title, 
+                   books.description, 
+                   books.page_count,
+                   books.created_at AS book_created_at, 
+                   books.updated_at AS book_updated_at,
+                   books.genre_id, 
+                   books.publisher_id
+            FROM authors
+            LEFT JOIN book_authors ON authors.id = book_authors.author_id
+            LEFT JOIN books ON books.id = book_authors.book_id
+            WHERE authors.id = %(id)s;
+        """
+        results = connect_to_mysql(cls.DB).query_db(query, data)
+        if not results:
             return None
-    
-        author_of_book = cls(result[0])
-        for row_in_db in result:
-            if row_in_db['book_id'] is not None:
+            
+        author = cls(results[0])
+        author.books_by_this_author = []
+        
+        for row in results:
+            if row['book_id']:
                 book_data = {
-                    "id": row_in_db['book_id'],
-                    "title": row_in_db['title'],
-                    "description": row_in_db['description'],
-                    "page_count": row_in_db['page_count'],
-                    "created_at": row_in_db['book_created_at'],
-                    "updated_at": row_in_db['book_updated_at'],
-                    "genre_id": row_in_db['genre_id'],
-                    "author_id": row_in_db['author_id'],
-                    "publisher_id": row_in_db['publisher_id']
+                    'id': row['book_id'],
+                    'title': row['title'],
+                    'description': row['description'],
+                    'page_count': row['page_count'],
+                    'created_at': row['book_created_at'],
+                    'updated_at': row['book_updated_at'],
+                    'genre_id': row['genre_id'],
+                    'publisher_id': row['publisher_id']
                 }
-                author_of_book.books_by_this_author.append(books_model.Book(book_data))
-        return author_of_book
+                author.books_by_this_author.append(book_data)
+                
+        return author
     
     @classmethod
     def get_author_with_publisher(cls, data):

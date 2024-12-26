@@ -35,6 +35,24 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        .book-title {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .book-title:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        .description-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .actions {
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -59,31 +77,35 @@
                     <th>Actions</th>
                     <th>Created At</th>
                     <th>Updated At</th>
-                    
                 </tr>
             </thead>
             <tbody>
                 {% for book in all_books %}
                 <tr>
-                    <td>{{ book.title }}</td>
-                    <td class="description-cell" title="{{ book.description }}">{{ book.description[:50] }}{% if book.description|length > 50 %}...{% endif %}</td>
+                    <td>
+                        <a href="{{ url_for('book_with_authors', book_id=book.id) }}" class="book-title">
+                            {{ book.title }}
+                        </a>
+                    </td>
+                    <td class="description-cell" title="{{ book.description }}">
+                        {{ book.description[:50] }}{% if book.description|length > 50 %}...{% endif %}
+                    </td>
                     <td>{{ book.page_count }}</td>
                     <td class="actions">
-                        <a href="/book/{{ book.id }}/update" class="btn btn-sm btn-info">Edit</a>
-                        <a href="/book/{{ book.id }}/delete" class="btn btn-sm btn-danger">Delete</a>
-                        
+                        <div class="btn-group" role="group">
+                            <a href="/book/{{ book.id }}/update" class="btn btn-sm btn-info">Edit</a>
+                            <a href="/book/{{ book.id }}/delete" class="btn btn-sm btn-danger">Delete</a>
+                        </div>
                     </td>
-                    <td>{{ book.created_at }}</td>
-                    <td>{{ book.updated_at }}</td>
-                    
+                    <td>{{ book.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ book.updated_at.strftime('%Y-%m-%d') }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
-
         </table>
         
         <div class="text-center mt-3">
-            <a href="/" class="btn btn-link">Home</a>
+            <a href="/" class="btn btn-secondary">Home</a>
         </div>
     </div>
 

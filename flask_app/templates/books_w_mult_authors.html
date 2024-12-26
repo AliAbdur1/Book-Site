@@ -36,7 +36,25 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Books with Multiple Authors</h1>
+        <h1 class="text-center mb-4">Books with Multiple Authors</h1>
+        
+        <!-- Author Count Filter -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Filter by Author Count</h5>
+                        <p class="card-text">Currently showing books with {{ min_authors }} or more authors</p>
+                        <div class="btn-group" role="group" aria-label="Author count filter">
+                            <a href="{{ url_for('books_by_author_count', min_authors=1) }}" class="btn btn-outline-primary {% if min_authors == 1 %}active{% endif %}">1+</a>
+                            <a href="{{ url_for('books_by_author_count', min_authors=2) }}" class="btn btn-outline-primary {% if min_authors == 2 %}active{% endif %}">2+</a>
+                            <a href="{{ url_for('books_by_author_count', min_authors=3) }}" class="btn btn-outline-primary {% if min_authors == 3 %}active{% endif %}">3+</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="table-container">
             <table class="table table-striped">
                 <thead>
@@ -64,8 +82,8 @@
             </table>
         </div>
         <div class="text-center mt-4">
-            <a href="/books_with_multiple_authors" class="btn btn-link">Back to Books with Multiple Authors</a>
-            <a href="/" class="btn btn-link">Home</a>
+            <a href="/books" class="btn btn-primary">Back to All Books</a>
+            <a href="/" class="btn btn-secondary">Home</a>
         </div>
     </div>
 

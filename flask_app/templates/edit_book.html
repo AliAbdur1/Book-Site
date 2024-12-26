@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Book</title>
+    <title>Edit Book</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             background: radial-gradient(ellipse at top, #e66465, transparent),
@@ -67,33 +68,33 @@
             text-decoration: underline;
         }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
-        <h1>Add Book</h1>
-        <form action="/books/add" method="POST">
+        <h1>Edit Book</h1>
+        <form action="/books/{{ book.id }}/update" method="POST">
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" name="title" class="form-control" required>
+                <input type="text" id="title" name="title" class="form-control" value="{{ book.title }}" required>
             </div>
             
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4" class="form-control" required></textarea>
+                <textarea id="description" name="description" rows="4" class="form-control" required>{{ book.description }}</textarea>
             </div>
             
             <div class="form-group">
                 <label for="page_count">Page Count:</label>
-                <input type="number" id="page_count" name="page_count" class="form-control" required>
+                <input type="number" id="page_count" name="page_count" class="form-control" value="{{ book.page_count }}" required>
             </div>
             
             <div class="form-group">
                 <label for="genre_id">Genre:</label>
                 <select name="genre_id" class="form-control" required>
-                    <option value="" disabled selected>Select a Genre</option>
-                    {% for genre in list_of_genres %}
-                        <option value="{{ genre.id }}">{{ genre.name }}</option>
+                    {% for genre in genres %}
+                        <option value="{{ genre.id }}" {% if genre.id == book.genre_id %}selected{% endif %}>
+                            {{ genre.name }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
@@ -101,8 +102,11 @@
             <div class="form-group">
                 <label for="authors">Authors:</label>
                 <select name="author_ids[]" class="form-control" id="authorSelect" multiple required>
-                    {% for author in authors_for_book %}
-                        <option value="{{ author.id }}">{{ author.first_name }} {{ author.last_name }}</option>
+                    {% for author in all_authors %}
+                        <option value="{{ author.id }}" 
+                            {% if author in book.this_Books_many_Authors %}selected{% endif %}>
+                            {{ author.first_name }} {{ author.last_name }}
+                        </option>
                     {% endfor %}
                 </select>
                 <small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple authors</small>
@@ -111,16 +115,17 @@
             <div class="form-group">
                 <label for="publisher_id">Publisher:</label>
                 <select name="publisher_id" class="form-control" required>
-                    <option value="" disabled selected>Select a Publisher</option>
-                    {% for publisher in publishers_of_books %}
-                        <option value="{{ publisher.id }}">{{ publisher.name }}</option>
+                    {% for publisher in publishers %}
+                        <option value="{{ publisher.id }}" {% if publisher.id == book.publisher_id %}selected{% endif %}>
+                            {{ publisher.name }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
             
-            <input type="submit" value="Add Book" class="btn btn-primary">
+            <input type="submit" value="Update Book" class="btn btn-primary">
         </form>
-        <a href="/" class="btn btn-link mt-3">Home</a>
+        <a href="/books" class="btn btn-link mt-3">Back to Books</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
