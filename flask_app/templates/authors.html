@@ -57,7 +57,11 @@
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    {% if session['role'] == 'admin' %}
                     <th>Actions</th>
+                    {% else %}
+                    <th>More by this author</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -66,8 +70,10 @@
                     <td>{{ author.first_name }}</td>
                     <td>{{ author.last_name }}</td>
                     <td class="actions">
+                        {% if session['role'] == 'admin' %}
                         <a href="/authors/{{ author.id }}/edit" class="btn btn-sm btn-info">Edit</a>
                         <a href="/authors/{{ author.id }}/delete" class="btn btn-sm btn-danger">Delete</a>
+                        {% endif %}
                         <a href="/books_written_by_this_author/display/{{ author.id }}" class="btn btn-sm btn-secondary">Books by this author</a>
                     </td>
                 </tr>

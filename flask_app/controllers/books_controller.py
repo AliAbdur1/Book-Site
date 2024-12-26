@@ -1,10 +1,12 @@
 from flask import render_template, redirect, request, flash, session, url_for
 from flask_app import app
+from flask_app.models.users_model import User
 from flask_app.models.authors_model import Author
 from flask_app.models.books_model import Book
 from flask_app.models.publishers_model import Publisher
 from flask_app.models.genres_model import Genre
 from flask_app.models.reviews_model import Review
+from flask_app.models.review_comments_model import ReviewComment
 from functools import wraps # wraps stuff
 
 
@@ -36,7 +38,8 @@ def book_with_authors(book_id):
     if not book:
         flash("No book found with this ID.", "error")
         return redirect('/books')
-    return render_template("book_w_authors.html", book=book)
+    all_users = User.get_all_users()  # Get all users for the recommendation dropdown
+    return render_template("book_w_authors.html", book=book, all_users=all_users)
 
 @app.route('/book/<int:book_id>/review', methods=['POST'])
 @login_required
@@ -185,16 +188,17 @@ def update_book(book_id):
             "publisher_id": request.form['publisher_id'],
             "author_ids": request.form.getlist("author_ids[]")
         }
-        result = Book.update(data)
+        
+        result = Book.update_book(data)
         if result:
-            flash('Book updated successfully!', 'success')
-            return redirect(f'/books')
+            flash("Book updated successfully!", "success")
+            return redirect('/books')
         else:
-            flash('Failed to update book. Please try again.', 'danger')
-            return redirect(f'/book/{book_id}/update')
+            flash("Error updating book. Please try again.", "error")
+            return redirect(f'/books/{book_id}/edit')
             
-    # GET request - show the form
-    book = Book.get_book_with_reviews(book_id)  # This method already loads authors
+    # GET request - show the form with current data
+    book = Book.get_book_by_id(book_id)
     if not book:
         flash("Book not found", "error")
         return redirect('/books')
@@ -202,9 +206,34 @@ def update_book(book_id):
     authors = Author.get_all_authors()
     publishers = Publisher.get_all_publishers()
     genres = Genre.get_all_genres()
-    
-    return render_template('update_book.html', 
+    return render_template('edit_book.html', 
                          book=book,
                          authors=authors,
                          publishers=publishers,
                          genres=genres)
+
+@app.route('/review/<int:review_id>/comment', methods=['POST'])
+@login_required
+def add_review_comment(review_id):
+    if not 'user_id' in session:
+        return redirect('/login')
+    
+    data = {
+        'comment': request.form['comment'],
+        'user_id': session['user_id'],
+        'review_id': review_id
+    }
+    
+    ReviewComment.create_comment(data)
+    flash("Comment added successfully!", "success")
+    return redirect(request.referrer)
+
+@app.route('/comment/<int:comment_id>/delete', methods=['POST'])
+@login_required
+def delete_review_comment(comment_id):
+    if not 'user_id' in session:
+        return redirect('/login')
+    
+    ReviewComment.delete_comment(comment_id, session['user_id'])
+    flash("Comment deleted successfully!", "success")
+    return redirect(request.referrer)

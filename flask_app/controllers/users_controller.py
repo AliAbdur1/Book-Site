@@ -7,6 +7,7 @@ from flask_app.models.users_model import User
 from flask_app.models.books_model import Book
 from flask_app.models.reviews_model import Review
 from flask_app.models.authors_model import Author
+from flask_app.models.recommendations_model import BookRecommendation
 from flask_bcrypt import Bcrypt # GPT Bcrypt
 from functools import wraps # wraps stuff
 bcrypt = Bcrypt(app)
@@ -248,6 +249,16 @@ def upload_photo():
         flash('Invalid file type. Please use PNG, JPG, JPEG, or GIF', 'error')
     
     return redirect(request.referrer)
+
+@app.route('/profile')
+@login_required
+def profile():
+    if 'user_id' not in session:
+        return redirect('/login')
+    
+    user = User.get_user_by_id(session['user_id'])
+    recommendations = BookRecommendation.get_user_recommendations(session['user_id'])
+    return render_template('user_profile.html', user=user, recommendations=recommendations)
 
 @app.route('/logout')
 def logout():

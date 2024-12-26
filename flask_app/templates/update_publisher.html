@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Publisher</title>
+    <title>Update Publisher</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -33,7 +33,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="form-title">Add New Publisher</h1>
+        <h1 class="form-title">Update Publisher</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="alert alert-info">
@@ -43,6 +43,8 @@
                 </div>
             {% endif %}
         {% endwith %}
+        
+        <!-- Publisher Info Form -->
         <form action="/publisher/{{ publisher['id'] }}/update" method="post">
             <input type="hidden" name="id" value="{{ publisher.id }}">
             <div class="form-group">
@@ -61,10 +63,43 @@
                 <label for="state">State:</label>
                 <input type="text" class="form-control" name="state" value="{{ publisher.state }}" required>
             </div>
-            
-            <button type="submit" class="btn btn-primary btn-block">Update Publisher info</button>
+            <button type="submit" class="btn btn-primary btn-block">Update Publisher Info</button>
         </form>
+
+        <!-- Current Authors Section -->
+        <div class="mt-5">
+            <h3>Current Authors</h3>
+            <ul class="list-group mb-4">
+                {% for author in publisher.authors %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ author.first_name }} {{ author.last_name }}
+                        <form action="/publisher/{{ publisher.id }}/remove_author/{{ author.id }}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Add Author Form -->
+        <div class="mt-4">
+            <h3>Add Author</h3>
+            <form action="/publisher/{{ publisher.id }}/add_author" method="post">
+                <div class="form-group">
+                    <label for="author_id">Select Author:</label>
+                    <select name="author_id" class="form-control" required>
+                        <option value="">Select an author</option>
+                        {% for author in all_authors %}
+                            <option value="{{ author.id }}">{{ author.first_name }} {{ author.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Add Author</button>
+            </form>
+        </div>
+
         <div class="text-center mt-4">
+            <a href="/publishers" class="btn btn-secondary">Back to Publishers</a>
             <a href="/" class="btn btn-link">Home</a>
         </div>
     </div>

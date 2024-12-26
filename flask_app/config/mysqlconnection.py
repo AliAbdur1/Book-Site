@@ -1,5 +1,6 @@
 # a cursor is the object we use to interact with the database
 import pymysql.cursors
+
 # this class will give us an instance of a connection to our database
 class MySQLConnection:
     def __init__(self, db):
@@ -42,4 +43,3 @@ class MySQLConnection:
 # connect_to_mysql receives the database we're using and uses it to create an instance of MySQLConnection
 def connect_to_mysql(db):
     return MySQLConnection(db)
-

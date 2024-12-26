@@ -65,24 +65,50 @@ def update_publisher(publisher_id):
         result = Publisher.update_publisher(data)
         if result:
             flash('Publisher updated successfully!', 'success')
-            return redirect(f'/book/{publisher_id}')
+            return redirect(f'/publishers/{publisher_id}')
         else:
             flash('Failed to update publisher. Please try again.', 'danger')
-    # Fetch the book data to pre-populate the form
-    publisher = Publisher.get_publisher_by_id(publisher_id)
-    return render_template('update_publisher.html', publisher=publisher)
 
-# @app.route('/publisher/<int:publisher_id>/delete', methods=['GET', 'POST'])
-# @login_required # login
-# def delete_this_publisher(publisher_id):
-#     if request.method == 'POST':
-#         # result = Book.delete_book(book_id)
-#         if result:
-#             flash('publisher deleted successfully!', 'success')
-#         else:
-#             flash('Failed to delete publisher. Please try again.', 'danger')
-#     result = Publisher.delete_publisher(publisher_id)
-#     return redirect('/publishers')
+    # Fetch the publisher data with its authors
+    publisher = Publisher.get_publisher_with_authors({"id": publisher_id})
+    # Get all authors for the dropdown
+    all_authors = Author.get_all_authors()
+    return render_template('update_publisher.html', publisher=publisher, all_authors=all_authors)
+
+@app.route('/publisher/<int:publisher_id>/add_author', methods=['POST'])
+@login_required
+def add_author_to_publisher(publisher_id):
+    author_id = request.form.get('author_id')
+    if not author_id:
+        flash('Please select an author', 'danger')
+        return redirect(f'/publisher/{publisher_id}/update')
+
+    data = {
+        'publisher_id': publisher_id,
+        'author_id': author_id
+    }
+
+    if Publisher.add_author(data):
+        flash('Author added successfully!', 'success')
+    else:
+        flash('Failed to add author. They may already be associated with this publisher.', 'danger')
+
+    return redirect(f'/publisher/{publisher_id}/update')
+
+@app.route('/publisher/<int:publisher_id>/remove_author/<int:author_id>', methods=['POST'])
+@login_required
+def remove_author_from_publisher(publisher_id, author_id):
+    data = {
+        'publisher_id': publisher_id,
+        'author_id': author_id
+    }
+
+    if Publisher.remove_author(data):
+        flash('Author removed successfully!', 'success')
+    else:
+        flash('Failed to remove author.', 'danger')
+
+    return redirect(f'/publisher/{publisher_id}/update')
 
 @app.route('/publisher/<int:publisher_id>/delete', methods=['POST'])
 @login_required  # login
