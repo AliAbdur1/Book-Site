@@ -63,6 +63,21 @@ class Review:
         return reviews
     
     @classmethod
+    def get_review_by_id(cls, review_id):
+        query = "SELECT * FROM reviews WHERE id = %(id)s;"
+        results = connect_to_mysql(cls.DB).query_db(query, {'id': review_id})
+        if results:
+            return cls(results[0])
+        return None
+    
+    @classmethod
+    def update_review(cls, review_id, user_id, comment, stars):
+        """Update a review if it belongs to the user"""
+        query = "UPDATE reviews SET comment = %(comment)s, stars = %(stars)s, updated_at = NOW() WHERE id = %(id)s AND user_id = %(user_id)s;"
+        return connect_to_mysql(cls.DB).query_db(query, {'id': review_id, 'comment': comment, 'stars': stars, 'user_id': user_id})
+    
+    
+    @classmethod
     def delete_review(cls, review_id, user_id):
         """Delete a review if it belongs to the user"""
         query = "DELETE FROM reviews WHERE id = %(id)s AND user_id = %(user_id)s;"

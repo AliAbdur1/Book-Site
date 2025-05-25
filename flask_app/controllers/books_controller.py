@@ -62,6 +62,17 @@ def add_review(book_id):
     flash("Review added successfully!", "success")
     return redirect(f'/book/{book_id}')
 
+@app.route('/review/<int:review_id>/update', methods=['POST'])
+@login_required
+def update_review(review_id):
+    if not 'user_id' in session:
+        return redirect('/login')
+    
+    book_id = request.form['book_id']
+    Review.update_review(review_id, session['user_id'], request.form['comment'], request.form['stars'])
+    flash("Review updated successfully!", "success")
+    return redirect(f'/book/{book_id}')
+
 @app.route('/review/<int:review_id>/delete', methods=['POST'])
 @login_required
 def delete_review(review_id):
