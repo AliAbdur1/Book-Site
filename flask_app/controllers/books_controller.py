@@ -21,6 +21,36 @@ def login_required(f):
     return decorated_function
 # decorator ^
 
+@app.route('/search/books')
+def search_books():
+    search_term = request.args.get('title', '')
+    if not search_term:
+        return redirect('/books')
+    
+    books = Book.search_by_title(search_term)
+    genres = Genre.get_all_genres()
+    return render_template('book_list.html', all_books=books, search_term=search_term, list_of_genres=genres)
+
+@app.route('/search/books/page_count')
+def search_books_by_page_count():
+    page_count = request.args.get('page_count', '')
+    if not page_count:
+        return redirect('/books')
+    
+    books = Book.search_by_page_count(page_count)
+    genres = Genre.get_all_genres()
+    return render_template('book_list.html', all_books=books, page_count=page_count, list_of_genres=genres)
+
+@app.route('/search/books/genre')
+def search_books_by_genre():
+    genre_id = request.args.get('genre_id', '')
+    if not genre_id:
+        return redirect('/books')
+    
+    books = Book.search_by_genre(genre_id)
+    genres = Genre.get_all_genres()
+    return render_template('book_list.html', all_books=books, genre_id=genre_id, list_of_genres=genres)
+
 @app.route('/books_with_multiple_authors')
 @app.route('/books_with_multiple_authors/<int:min_authors>')
 @login_required # login
@@ -112,7 +142,8 @@ def books_written_by_this_author(author_id):
 @login_required # login
 def book_list():
     books = Book.get_all_books()
-    return render_template('book_list.html', all_books=books)
+    genres = Genre.get_all_genres()
+    return render_template('book_list.html', all_books=books, list_of_genres=genres)
 
 # Route to add a new book
 @app.route('/books/add', methods=['GET', 'POST'])

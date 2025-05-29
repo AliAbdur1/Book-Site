@@ -226,6 +226,36 @@ class Book:
         query  = "DELETE FROM books WHERE id = %(id)s;"
         data = {'id': book_id}
         return connect_to_mysql(cls.DB).query_db(query, data)
+    
+    @classmethod
+    def search_by_title(cls, title):
+        query = """SELECT * FROM books 
+                WHERE title LIKE %(search_term)s;"""
+        results = connect_to_mysql(cls.DB).query_db(query, {'search_term': f'%{title}%'})
+        books = []
+        for book in results:
+            books.append(cls(book))
+        return books
+
+    @classmethod
+    def search_by_genre(cls, genre_id):
+        query = """SELECT * FROM books 
+                WHERE genre_id = %(genre_id)s;"""
+        results = connect_to_mysql(cls.DB).query_db(query, {'genre_id': genre_id})
+        books = []
+        for book in results:
+            books.append(cls(book))
+        return books
+
+    @classmethod
+    def search_by_page_count(cls, page_count):
+        query = """SELECT * FROM books 
+                WHERE page_count = %(page_count)s;"""
+        results = connect_to_mysql(cls.DB).query_db(query, {'page_count': page_count})
+        books = []
+        for book in results:
+            books.append(cls(book))
+        return books
 
     @classmethod
     def get_book_authors(cls, book_id):
