@@ -23,13 +23,24 @@ def login_required(f):
 
 @app.route('/search/books')
 def search_books():
-    search_term = request.args.get('title', '')
-    if not search_term:
+    title = request.args.get('title', '')
+    author = request.args.get('author', '')
+    
+    if not title and not author:
         return redirect('/books')
     
-    books = Book.search_by_title(search_term)
+    if title:
+        books = Book.search_by_title(title)
+    else:
+        books = Book.search_by_author(author)
+    
     genres = Genre.get_all_genres()
-    return render_template('book_list.html', all_books=books, search_term=search_term, list_of_genres=genres)
+    return render_template('book_list.html', 
+        all_books=books, 
+        title_search=title,
+        author_search=author,
+        list_of_genres=genres
+    )
 
 @app.route('/search/books/page_count')
 def search_books_by_page_count():
@@ -50,6 +61,16 @@ def search_books_by_genre():
     books = Book.search_by_genre(genre_id)
     genres = Genre.get_all_genres()
     return render_template('book_list.html', all_books=books, genre_id=genre_id, list_of_genres=genres)
+
+@app.route('/search/books/author')
+def search_books_by_author():
+    author_id = request.args.get('author_id', '')
+    if not author_id:
+        return redirect('/books')
+    
+    books = Book.search_by_author(author_id)
+    genres = Genre.get_all_genres()
+    return render_template('book_list.html', all_books=books, searched_author=author_id, list_of_genres=genres)
 
 @app.route('/books_with_multiple_authors')
 @app.route('/books_with_multiple_authors/<int:min_authors>')

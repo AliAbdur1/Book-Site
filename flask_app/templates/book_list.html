@@ -67,12 +67,13 @@
         <h1 class="text-center">List of Books</h1>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <form action="/search/books" method="get" class="form-inline">
-                <div class="input-group">
-                    <input type="text" name="title" class="form-control" placeholder="Search by title..." value="{{ search_term if search_term else '' }}">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-outline-secondary">Search</button>
-                    </div>
+                <div class="input-group mr-2">
+                    <input type="text" name="title" class="form-control" placeholder="Search by title..." value="{{ title_search if title_search else '' }}">
                 </div>
+                <div class="input-group mr-2">
+                    <input type="text" name="author" class="form-control" placeholder="Search by author name..." value="{{ author_search if author_search else '' }}">
+                </div>
+                <button type="submit" class="btn btn-outline-secondary">Search</button>
             </form>
 
             <form action="/search/books/page_count" method="get" class="form-inline">
@@ -99,6 +100,16 @@
                 </div>
             </div>
         </form>
+
+        <form action="/search/books/author" method="get" class="form-inline">
+            <div class="input-group">
+                <input type="number" name="searched_author" class="form-control" placeholder="Search by author..." value="{{ searched_author if searched_author else '' }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                </div>
+            </div>
+        </form>
+
         <table class="table table-striped table-bordered">
             <thead class="thead-light">
                 <tr>
